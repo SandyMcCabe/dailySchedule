@@ -7,7 +7,24 @@ $(document).ready(function () {
 //variables to store the time, and also the "hour" in military format
 var currentTime = moment().format('LTS');
 var currentHour = moment().format('kk');
-// var task = {};
+
+// add color to calendar
+function addColor() {
+var taskBlock = document.getElementsByClassName("col-sm-9");
+for(i = 0; i < taskBlock.length; i++) {
+  if(i+8 === currentHour){
+    console.log("here");
+    taskBlock[i].style.backgroundColor = '#F5B7B1';
+  }else if (i+8 > currentHour) {
+    taskBlock[i].style.backgroundColor = '#ABEBC6';
+  }else {
+    taskBlock[i].style.backgroundColor = '#D5D8DC';
+  }
+}
+};
+
+
+
 
 // Add the basic calendar sections
 // var scheduleArr = [
@@ -46,8 +63,8 @@ var currentHour = moment().format('kk');
 
   // fullDay+=oneHour;
 
-  }
-  };
+  //}
+  //};
     
     // let save= <i class="fas fa-save"></i>
   
@@ -84,5 +101,5 @@ var currentHour = moment().format('kk');
 
 //update every 5 minutes
 
-buildSchedule();
+addColor();
 
