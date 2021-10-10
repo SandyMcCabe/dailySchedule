@@ -1,105 +1,126 @@
-//Add date and time to Header
+// Add date and time to Header
 $(document).ready(function () {
-  $("#currentDay").text(moment().format('dddd, MMMM Do YYYY'));
-  $("#currentTime").text(moment().format('LTS'));
-});
 
-//variables to store the time, and also the "hour" in military format
+// variables to store the time, and also the "hour" in military format
 var currentTime = moment().format('LTS');
 var currentHour = moment().format('kk');
 
-// add color to calendar
-function addColor() {
-var taskBlock = document.getElementsByClassName("col-sm-9");
-for(i = 0; i < taskBlock.length; i++) {
-  if(i+8 === currentHour){
-    console.log("here");
-    taskBlock[i].style.backgroundColor = '#F5B7B1';
-  }else if (i+8 > currentHour) {
-    taskBlock[i].style.backgroundColor = '#ABEBC6';
-  }else {
-    taskBlock[i].style.backgroundColor = '#D5D8DC';
-  }
-}
-};
+var scheduleArr = [];
 
+//display current date and time
+$("#currentDay").text(moment().format('dddd, MMMM Do YYYY'));
+$("#currentTime").text(moment().format('LTS'));
 
-
-
-// Add the basic calendar sections
-// var scheduleArr = [
-//   {hour:"8 AM", task:"", hour:08},
-//   {hour:"9 AM", task:"", hour:09},
-//   {hour:"10 AM", task:"", hour:10},
-//   {hour:"11 AM", task:"", hour:11},
-//   {hour:"12 PM", task:"LUNCH", hour:12},
-//   {hour:"1 PM", task:"", hour:13},
-//   {hour:"2 PM", task:"", hour:14},
-//   {hour:"3 PM", task:"", hour:15},
-//   {hour:"4 PM", task:"", hour:16},
-//   {hour:"5 PM", task:"", hour:17},
-// ] 
-
-//dynamically create the calendar form
-
-// function buildSchedule() {
-  // console.log('here');
-  // //container for the schedule
-  // let fullDay="";
-
-  // console.log('here2');
-  // for(i = 0; i < scheduleArr.length; i++) {
-  //   console.log('here3');
-    
-
-   
-    // const oneHour = `<form class="row oneHour">
-    // <div class="col-sm-2 text-right">scheuldeArr[i].hour</div>
-    // <div class="col-sm-9 text-right">scheuldeArr[i].task</div>
-    // <div class="col-sm-1 text-right"></div>`;
-    
-      // console.log(oneHour);
-
-
-  // fullDay+=oneHour;
-
-  //}
-  //};
-    
-    // let save= <i class="fas fa-save"></i>
-  
-    // div +=  "<div class='rfor(i = 8; i < 20; i++) {ow'>";
-    
-
-
-
-
-//color code lines based on current time
-
-//icon for save button
-
-//create tasks
-
-//save tasks
-// var saveTasks = function() {
-//   localStorage.setItem("tasks", JSON.stringify(tasks));
-// };
-
-// var loadTasks = function() {
-//   tasks = JSON.parse(localStorage.getItem("tasks"));
-
-  // if nothing in localStorage, create a new object to track all task status arrays
-//   if (!tasks) {
-//     tasks = {
-//       toDo: [],
-//       inProgress: [],
-//       inReview: [],
-//       done: []
-//     };
-//   }
-// };
-
-//update every 5 minutes
-
+//call function to color calendar based on time
 addColor();
+renderPage();
+// allStorage();
 
+// scheduleArr = JSON.parse(localStorage.getItem(Key)), JSON.parse(localStorage.getItem(Value)) || [] ;
+// console.log(scheduleArr);
+// loadMeetings();
+
+
+  // load tasks from local storage
+// function loadMeetings() {
+//     var meetingsArr = JSON.parse(localStorage.getItem("tasks"));
+    // for(let i = 0; i < localStorage.length; i++) {
+    //   const time = localStorage.key(i);
+    //   const task = localStorage.value(key);
+
+    //   scheduleArr.push(time, task);
+    //   console.log(scheduleArr);
+
+    // }
+//     console.log(meetingsArr)
+//     // if nothing in localStorage, create a new object to track all task status arrays
+//     if (!meetingsArr) {
+//       meetingsArr = {
+//         Time: [],
+//         Task: []
+//       };
+//     }
+//     console.log(meetingsArr);
+//   };
+  
+// save new tasks into Local Storage
+
+
+function renderPage() {
+  console.log("1");
+  console.log(localStorage);
+  
+  scheduleArr = JSON.parse(localStorage.getItem("Arr") );
+  console.log("2");
+  
+  console.log(scheduleArr);
+  
+  console.log("3");
+
+  if (!scheduleArr) {
+    scheduleArr = [];
+  };
+  
+  if (scheduleArr) {
+    for(i = 0; i < scheduleArr.length; i++) {
+      var dailyTasks = (scheduleArr[i].time);
+      
+      var tgtBlock = document.getElementById(scheduleArr[i].time).querySelector(".task");      
+      // var tgtBlock = tgtParent.querySelector('task');
+      tgtBlock.innerHTML =  scheduleArr[i].task;
+      
+      console.log("inner");
+      // var ArrBlock = $(this).siblings('.task').val();
+      // var newTime = $(this).parent().attr('id');
+      
+    }
+  }
+     
+  
+    }
+    
+    
+    
+    
+    // add color to calendar
+    function addColor() {
+      var taskBlock = document.getElementsByClassName("task");
+      for (i = 0; i < taskBlock.length; i++) {
+        if (i + 8 == currentHour) {
+          //if the time block is the current hour, then background is red
+          taskBlock[i].style.backgroundColor = '#F5B7B1';
+        } else if (i + 8 > currentHour) {
+          //if the time block is greater than the current hour, future, then green
+          taskBlock[i].style.backgroundColor = '#ABEBC6';
+        } else {
+          //all other cases means that the time has passed, so grey
+          taskBlock[i].style.backgroundColor = '#D5D8DC';
+        }
+      }
+    };
+    
+  
+  
+  $('.btn').click(function () {
+  
+    var newTaskBlock = $(this).siblings('.task').val();
+    var newTime = $(this).parent().attr('id');
+  
+  console.log(newTime);
+  console.log(newTaskBlock)
+  
+    var obj = {
+      "time": newTime,
+      "task": newTaskBlock
+    };
+  
+    console.log(obj);
+  
+    scheduleArr.push(obj);
+    console.log(scheduleArr);
+  
+    localStorage.setItem("Arr", JSON.stringify(scheduleArr));
+  });
+
+
+});
